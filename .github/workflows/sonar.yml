@@ -37,11 +37,27 @@ jobs:
       
   deploy:
     needs: build-analyze-scan
-    runs-on: [tic] # Use your self-hosted runner label here    
+    runs-on: self-hosted # Use your self-hosted runner label here    
     steps:
       - name: Pull the Docker image
         run: docker pull vedantthavkar/tic-tac-toe:latest
       - name: Trivy image scan
         run: trivy image vedantthavkar/tic-tac-toe:latest # Add Trivy scan command here
       - name: Run the container
-        run: docker run -d --name tic-tac -p 3000:3000 vedantthavkar/tic-tac-toe:latest  
+        run: docker run -d --name ticgame -p 3000:3000 vedantthavkar/tic-tac-toe:latest  
+      
+      - name: Update kubeconfig
+        run: aws eks --region ap-south-1 update-kubeconfig --name EKS_CLOUD
+
+      - name: Deploy to kubernetes
+        run: kubectl apply -f deployment-service.yml
+      
+      - name: Send a Slack Notification
+        if: always()
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#jenkins'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
