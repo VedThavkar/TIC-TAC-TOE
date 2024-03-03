@@ -31,4 +31,8 @@ jobs:
           docker push vedantthavkar/tic-tac-toe:latest
         env:
           DOCKER_CLI_ACI: 1
+
+      - name: Image scan
+        run: trivy image vedantthavkar/tic-tac-toe:latest > trivyimage.txt
+      
       
