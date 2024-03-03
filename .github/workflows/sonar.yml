@@ -45,14 +45,18 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: self-hosted 
+    runs-on: tic-tac
     steps:
       - name: Pull the Docker image
         run: docker pull vedantthavkar/tic-tac-toe:latest
+
       - name: Trivy image scan
-        run: trivy image vedantthavkar/tic-tac-toe:latest 
+        run: trivy image vedantthavkar/tic-tac-toe:latest
+
       - name: Run the container
-        run: docker run -d --name ticgame -p 3000:3000 vedantthavkar/tic-tac-toe:latest  
+        run: docker run -d --name ticgame -p 3000:3000 vedantthavkar/tic-tac-toe:latest
+
+    
         # Add Trivy scan command here
         
     
