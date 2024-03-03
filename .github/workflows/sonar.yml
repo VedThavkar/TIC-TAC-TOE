@@ -23,6 +23,10 @@ jobs:
       - name: Run Trivy
         run: |
           trivy fs . > trivyfs.txt
+      - name: Verify Trivy Installation
+        run: |
+          trivy --version
+          #ls -l /usr/local/bin/trivy 
       # If you wish to fail your job when the Quality Gate is red, uncomment the
       # following lines. This would typically be used to fail a deployment.
       # - uses: sonarsource/sonarqube-quality-gate-action@master
