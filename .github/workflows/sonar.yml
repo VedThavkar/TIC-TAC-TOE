@@ -42,6 +42,22 @@ jobs:
           docker push vedantthavkar/tic-tac-toe:latest
         env:
           DOCKER_CLI_ACI: 1
+
+  deploy:
+    needs: build
+    runs-on: self-hosted 
+    steps:
+      - name: Pull the Docker image
+        run: docker pull vedantthavkar/tic-tac-toe:latest
+      - name: Trivy image scan
+        run: trivy image vedantthavkar/tic-tac-toe:latest 
+      - name: Run the container
+        run: docker run -d --name ticgame -p 3000:3000 vedantthavkar/tic-tac-toe:latest  
+        # Add Trivy scan command here
+        
+    
+    # Use your self-hosted runner label here
+        
           # Use your self-hosted runner label here
           
       # If you wish to fail your job when the Quality Gate is red, uncomment the
