@@ -15,8 +15,8 @@ jobs:
       
       - name: Run the container
         run:  
-         docker stop ticgame
-         docker rm ticgame
+         docker stop a17fcfbfd61f
+         docker rm a17fcfbfd61f
       
       - name: Update kubeconfig
         run: aws eks --region ap-south-1 update-kubeconfig --name EKS_CLOUD
