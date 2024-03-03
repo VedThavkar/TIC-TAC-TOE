@@ -20,9 +20,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       - name: NPM Install
         run: npm install 
-      - name: Run Trivy
-        run: |
-          trivy fs . > trivyfs.txt 
+       
       - name: Install Trivy
         run: |
           sudo apt-get install wget apt-transport-https gnupg lsb-release -y
@@ -30,6 +28,10 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install trivy -y
+
+      - name: Run Trivy
+        run: |
+          trivy fs . > trivyfs.txt
 
       - name: Docker build and push
         run: |
